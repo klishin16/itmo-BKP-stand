@@ -1,0 +1,38 @@
+.front-react-common:
+  rules:
+    - changes:
+        - 'front-react/*'
+
+front-react-test:
+  extends: .front-react-common
+  stage: test
+  script:
+    - echo "Testing react"
+    - docker run $SPA_DOCKER_BUILDER_IMAGE:latest sh -c "CI=true yarn test"
+    - echo "Test successfully!"
+
+front_react_build:
+  extends: .front-react-common
+  stage: build
+  script:
+    - echo "Building react"
+    - docker build -f ./front-react/Build.Dockerfile 
+      --build-arg API_URL="https://kp-stand-backend.local.dev" 
+      -t $FRONT_REACT_DOCKER_IMAGE:$CI_COMMIT_SHORT_SHA ./front-react
+    - docker tag $FRONT_REACT_DOCKER_IMAGE:$CI_COMMIT_SHORT_SHA  $FRONT_REACT_DOCKER_IMAGE:latest
+    - docker push $FRONT_REACT_DOCKER_IMAGE:$CI_COMMIT_SHORT_SHA
+    - docker push $FRONT_REACT_DOCKER_IMAGE:latest
+
+
+front_react_deploy:
+  extends: .front-react-common
+  stage: deploy
+  script:
+    - echo "Deploying react"
+    - docker build -f ./front-react/Dockerfile --build-arg API_URL="https://kp-stand-backend.local.dev"
+      -t $FRONT_REACT_DOCKER_IMAGE:$CI_COMMIT_SHORT_SHA ./front-react
+    - docker tag $FRONT_REACT_DOCKER_IMAGE:$CI_COMMIT_SHORT_SHA  $FRONT_REACT_DOCKER_IMAGE:latest
+    - docker push $FRONT_REACT_DOCKER_IMAGE:$CI_COMMIT_SHORT_SHA
+    - docker push $FRONT_REACT_DOCKER_IMAGE:latest
+  dependencies:
+    - front_react_build

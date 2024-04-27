@@ -1,0 +1,75 @@
+image: docker:stable
+
+services:
+  - docker:dind
+
+variables:
+  DOCKER_DRIVER: overlay2
+  FRONT_REACT_DOCKER_IMAGE: $CI_REGISTRY_IMAGE/front_react
+  BACKEND_DOCKER_IMAGE: $CI_REGISTRY_IMAGE/backend
+
+stages:
+  - test # тестирование
+  - build # сборка
+  - deploy # развертывание
+
+before_script:
+  - docker login -u gitlab-ci-token -p
+      $CI_JOB_TOKEN http://$CI_REGISTRY
+
+top-level-job:
+  stage: build
+  script:
+    - echo "Hello world..."
+
+include:
+  - "front-react/.gitlab-ci.yml"
+  - "backend/.gitlab-ci.yml"
+
+#build:
+#  stage: build
+#  image: node
+#  script:
+#    - echo "Start building App"
+#    - yarn install
+#    - yarn build
+#    - echo "Build successfully!"
+
+#test:
+#  stage: test
+#  image: node
+#  script:
+#    - echo "Testing App"
+#    - yarn install
+#    - CI=true yarn test
+#    - echo "Test successfully!"
+
+#front-react:
+#  stage: test
+#  before_script:
+#    - cd front-react
+#    - npm install --global yarn
+#    - yarn install
+##    -  --pure-lockfile --prefer-offline --cache-folder .yarn
+#  script:
+#    - yarn test
+#    - yarn build
+#  cache:
+#    key: front-react
+#    paths:
+#      - front-react/.yarn
+#      - front-react/node_modules/
+#
+#backend:
+#  stage: test
+#  before_script:
+#    - cd backend
+#    - yarn install --pure-lockfile --prefer-offline --cache-folder .yarn
+#  script:
+#    - yarn test
+#    - yarn build
+#  cache:
+#    key: backend
+#    paths:
+#      - backend/.yarn
+#      - backend/node_modules/

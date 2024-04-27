@@ -1,0 +1,22 @@
+.backend-common:
+  rules:
+    - changes:
+        - 'backend/*'
+
+backend-test:
+  extends: .backend-common
+  stage: test
+  script:
+    - echo "Testing backend"
+
+backend-build:
+  extends: .backend-common
+  stage: build
+  script:
+    - echo "Building backend"
+
+backend-deploy:
+  extends: .backend-common
+  stage: deploy
+  script:
+    - echo "Deploying backend"
