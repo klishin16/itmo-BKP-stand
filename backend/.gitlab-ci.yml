@@ -16,7 +16,7 @@ backend-deploy:
     - echo "Deploying backend"
     - docker build
       -f ./backend/Dockerfile
-      -t BACKEND_DOCKER_IMAGE:$CI_COMMIT_SHORT_SHA ./backend
-    - docker tag BACKEND_DOCKER_IMAGE:$CI_COMMIT_SHORT_SHA  BACKEND_DOCKER_IMAGE:latest
-    - docker push BACKEND_DOCKER_IMAGE:$CI_COMMIT_SHORT_SHA
-    - docker push BACKEND_DOCKER_IMAGE:latest
+      -t $BACKEND_DOCKER_IMAGE:$CI_COMMIT_SHORT_SHA ./backend
+    - docker tag $BACKEND_DOCKER_IMAGE:$CI_COMMIT_SHORT_SHA  $BACKEND_DOCKER_IMAGE:latest
+    - docker push $BACKEND_DOCKER_IMAGE:$CI_COMMIT_SHORT_SHA
+    - docker push $BACKEND_DOCKER_IMAGE:latest
