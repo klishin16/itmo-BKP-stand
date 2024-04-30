@@ -8,7 +8,7 @@ front-react-test:
   stage: test
   script:
     - echo "Testing react"
-    - docker run $SPA_DOCKER_BUILDER_IMAGE:latest sh -c "CI=true yarn test"
+    - docker run $FRONT_REACT_DOCKER_BUILDER_IMAGE:latest sh -c "CI=true yarn test"
     - echo "Test successfully!"
 
 front_react_build:
