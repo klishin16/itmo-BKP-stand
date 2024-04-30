@@ -20,7 +20,7 @@ spec:
       containers:
         - name: kp-stand-front-react
           # так называется docker image
-          image: front_react
+          image: registry.local.dev/root/kp-stand/front_react:latest
           imagePullPolicy: IfNotPresent
       imagePullSecrets:
         - name: registry-key

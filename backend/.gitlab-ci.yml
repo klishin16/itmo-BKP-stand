@@ -3,12 +3,6 @@
     - changes:
         - 'backend/*'
 
-backend-test:
-  extends: .backend-common
-  stage: test
-  script:
-    - echo "Testing backend"
-
 backend-build:
   extends: .backend-common
   stage: build
@@ -20,3 +14,9 @@ backend-deploy:
   stage: deploy
   script:
     - echo "Deploying backend"
+    - docker build
+      -f ./backend/Dockerfile
+      -t BACKEND_DOCKER_IMAGE:$CI_COMMIT_SHORT_SHA ./backend
+    - docker tag BACKEND_DOCKER_IMAGE:$CI_COMMIT_SHORT_SHA  BACKEND_DOCKER_IMAGE:latest
+    - docker push BACKEND_DOCKER_IMAGE:$CI_COMMIT_SHORT_SHA
+    - docker push BACKEND_DOCKER_IMAGE:latest

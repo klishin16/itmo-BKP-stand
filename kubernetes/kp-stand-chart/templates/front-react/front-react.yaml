@@ -20,8 +20,10 @@ spec:
       containers:
         - name: kp-stand-front-react
           # так назвается docker image
-          image: kp-stand-front-react
-          imagePullPolicy: IfNotPresent
+          image: registry.local.dev/root/kp-stand/front_react:latest
+          imagePullPolicy: Always
+      imagePullSecrets:
+        - name: registry-key-1
 ---
 kind: Service
 apiVersion: v1
