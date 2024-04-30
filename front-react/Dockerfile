@@ -15,7 +15,7 @@ RUN npm install react-scripts@3.0.1 -g
 RUN yarn build
 
 # Nginx контейнер
-FROM nginx:alpine as delpoy
+FROM nginx:alpine as deploy
 COPY --from=builder /usr/src/app/dist /usr/share/nginx/html
 RUN rm /etc/nginx/conf.d/default.conf
 COPY nginx.conf /etc/nginx/conf.d

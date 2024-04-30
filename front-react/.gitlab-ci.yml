@@ -12,6 +12,7 @@ front_react_build:
       -f ./front-react/Dockerfile
       --build-arg API_URL="https://kp-stand-backend.local.dev" 
       --build-arg BUILDKIT_INLINE_CACHE=1
+      --cache-from "$FRONT_REACT_DOCKER_BUILDER_IMAGE"
       --target builder
       -t $FRONT_REACT_DOCKER_BUILDER_IMAGE:$CI_COMMIT_SHORT_SHA ./front-react
     - docker tag $FRONT_REACT_DOCKER_BUILDER_IMAGE:$CI_COMMIT_SHORT_SHA  $FRONT_REACT_DOCKER_BUILDER_IMAGE:latest
