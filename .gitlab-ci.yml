@@ -4,19 +4,21 @@ services:
   - docker:dind
 
 variables:
+  DOCKER_BUILDKIT: 1
   DOCKER_DRIVER: overlay2
-  FRONT_REACT_DOCKER_BUILDER_IMAGE: $CI_REGISTRY_IMAGE/front_react_builder
+
+  FRONT_REACT_DOCKER_BUILDER_IMAGE: $CI_REGISTRY_IMAGE/front_react_build
   FRONT_REACT_DOCKER_IMAGE: $CI_REGISTRY_IMAGE/front_react
+
   BACKEND_DOCKER_IMAGE: $CI_REGISTRY_IMAGE/backend
 
 stages:
-  - test # тестирование
   - build # сборка
+  - test # тестирование
   - deploy # развертывание
 
 before_script:
-  - docker login -u gitlab-ci-token -p
-      $CI_JOB_TOKEN http://$CI_REGISTRY
+  - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
 
 top-level-job:
   stage: build

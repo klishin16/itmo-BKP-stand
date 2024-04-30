@@ -1,5 +1,5 @@
 # Промежуточный build контейнер
-FROM node:alpine as build
+FROM node:alpine as builder
 
 # Рабочая директория
 WORKDIR /usr/src/app
@@ -15,8 +15,8 @@ RUN npm install react-scripts@3.0.1 -g
 RUN yarn build
 
 # Nginx контейнер
-FROM nginx:alpine
-COPY --from=build /usr/src/app/dist /usr/share/nginx/html
+FROM nginx:alpine as delpoy
+COPY --from=builder /usr/src/app/dist /usr/share/nginx/html
 RUN rm /etc/nginx/conf.d/default.conf
 COPY nginx.conf /etc/nginx/conf.d
 
