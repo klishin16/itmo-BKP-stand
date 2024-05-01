@@ -33,5 +33,6 @@ top-level-job:
 
 include:
   - "front-react/.gitlab-ci.yml"
+  - "front-angular/.gitlab-ci.yml"
   - "front-svelte/.gitlab-ci.yml"
   - "backend/.gitlab-ci.yml"
