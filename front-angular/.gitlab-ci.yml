@@ -7,9 +7,9 @@ front-angular-build:
   extends: .front-angular-common
   stage: build
   script:
-    - echo "Building svelte"
+    - echo "Building angular"
     - docker build
-      -f ./front-react/Dockerfile
+      -f ./front-angular/Dockerfile
       --build-arg API_URL="http://backend.local.dev"
       --build-arg BUILDKIT_INLINE_CACHE=1
       --cache-from "$FRONT_ANGULAR_DOCKER_BUILDER_IMAGE"
@@ -32,7 +32,7 @@ front-angular-deploy:
   stage: deploy
   needs: ["front-angular-build"]
   script:
-    - echo "Deploying svelte"
+    - echo "Deploying angular"
     - docker build
       -f ./front-angular/Dockerfile
       --build-arg BUILDKIT_INLINE_CACHE=1
