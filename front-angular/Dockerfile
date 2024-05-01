@@ -13,12 +13,11 @@ COPY . .
 RUN yarn install
 
 # Собираем приложение
-#RUN npm install react-scripts@3.0.1 -g
 RUN yarn build
 
 # Nginx контейнер
 FROM nginx:alpine as deploy
-COPY --from=builder /usr/src/app/dist /usr/share/nginx/html
+COPY --from=builder /usr/src/app/dist/front-angular/browser /usr/share/nginx/html
 RUN rm /etc/nginx/conf.d/default.conf
 COPY nginx.conf /etc/nginx/conf.d
 

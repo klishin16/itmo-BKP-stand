@@ -39,5 +39,5 @@ front_react_deploy:
       --target deploy
       -t $FRONT_REACT_DOCKER_IMAGE:$CI_COMMIT_SHORT_SHA ./front-react
     - docker tag $FRONT_REACT_DOCKER_IMAGE:$CI_COMMIT_SHORT_SHA  $FRONT_REACT_DOCKER_IMAGE:latest
-    - docker push $FRONT_REACT_DOCKER_IMAGE:$CI_COMMIT_SHORT_SHA
+#    - docker push $FRONT_REACT_DOCKER_IMAGE:$CI_COMMIT_SHORT_SHA
     - docker push $FRONT_REACT_DOCKER_IMAGE:latest

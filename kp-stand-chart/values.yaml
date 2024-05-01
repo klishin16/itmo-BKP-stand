@@ -42,6 +42,15 @@ ingress:
               name: kp-stand-front-react
               port:
                 number: 80
+    - host: front-angular.local.dev
+      paths:
+        - path: /
+          pathType: ImplementationSpecific
+          backend:
+            service:
+              name: kp-stand-front-angular
+              port:
+                number: 80
     - host: front-svelte.local.dev
       paths:
         - path: /
