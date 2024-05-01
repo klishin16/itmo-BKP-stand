@@ -13,7 +13,7 @@ COPY . .
 RUN --mount=type=cache,target=/usr/src/app/node_modules yarn install --prefer-offline
 
 # Собираем приложение
-RUN npm install react-scripts@3.0.1 -g
+#RUN npm install react-scripts@3.0.1 -g
 RUN yarn build
 
 # Nginx контейнер
