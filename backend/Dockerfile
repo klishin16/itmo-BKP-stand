@@ -1,6 +1,8 @@
 # Промежуточный build контейнер
 FROM node:alpine as builder
 
+ARG PORT=80
+
 # Рабочая директория
 WORKDIR /usr/src/app
 
