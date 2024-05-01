@@ -17,12 +17,14 @@ function useForceUpdate() {
     // is better than directly setting `setValue(value + 1)`
 }
 
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || 'http://localhost:3000';
+
 function App({ p_n  }: { p_n?: number }) {
     const n: number = p_n ?? 128;
     const [movies, setMovies] = useState<IMovie[]>([])
 
     useEffect(() => {
-        fetch(`http://localhost:3000/movies/${n}`)
+        fetch(`${BACKEND_URL}/movies/${n}`)
             .then(response => response.json())
             .then(data => setMovies(data))
     }, []);

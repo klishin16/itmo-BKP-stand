@@ -1,6 +1,8 @@
 # Промежуточный build контейнер
 FROM node:alpine as builder
 
+ENV VITE_BACKEND_URL=http://backend.local.dev
+
 # Рабочая директория
 WORKDIR /usr/src/app
 
