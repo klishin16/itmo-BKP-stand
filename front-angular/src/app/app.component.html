@@ -1,5 +1,5 @@
 <div class='page'>
-  <button id="render-btn">Render</button>
+  <button id="render-btn" (click)="render()">Render</button>
   <ul>
     <app-movie *ngFor="let movie of moviesList" [movie]="movie"/>
   </ul>
