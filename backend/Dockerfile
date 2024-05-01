@@ -13,5 +13,5 @@ RUN yarn install
 # Собираем приложение
 RUN yarn build
 
-# Запускаем сервер режиме
+# Запускаем сервер
 CMD [ "node", "dist/main.js" ]
