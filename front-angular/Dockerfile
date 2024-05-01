@@ -9,8 +9,7 @@ WORKDIR /usr/src/app
 # Копируем файлы приложения в рабочую директорию
 COPY . .
 
-# Устанавливаем зависимости с кэшированием BUILD KIT
-# RUN --mount=type=cache,target=/usr/src/app/node_modules yarn install --prefer-offline
+# Устанавливаем зависимости
 RUN yarn install
 
 # Собираем приложение

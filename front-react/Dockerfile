@@ -10,7 +10,6 @@ WORKDIR /usr/src/app
 COPY . .
 
 # Устанавливаем зависимости
-# RUN --mount=type=cache,target=/usr/src/app/node_modules yarn install --prefer-offline
 RUN yarn install
 
 # Собираем приложение
