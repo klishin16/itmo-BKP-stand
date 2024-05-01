@@ -6,14 +6,11 @@ FROM node:alpine as builder
 # Рабочая директория
 WORKDIR /usr/src/app
 
-# BUILD KIT
-RUN --mount=type=cache,target=/usr/src/app/node_modules yarn install --prefer-offline
-
 # Копируем файлы приложения в рабочую директорию
 COPY . .
 
-# Устанавливаем зависимости
-RUN yarn install
+# Устанавливаем зависимости с кэшированием BUILD KIT
+RUN --mount=type=cache,target=/usr/src/app/node_modules yarn install --prefer-offline
 
 # Собираем приложение
 RUN yarn build

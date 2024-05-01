@@ -6,14 +6,11 @@ ENV VITE_BACKEND_URL=http://backend.local.dev
 # Рабочая директория
 WORKDIR /usr/src/app
 
-# BUILD KIT
-RUN --mount=type=cache,target=/usr/src/app/node_modules yarn install --prefer-offline
-
 # Копируем файлы приложения в рабочую директорию
 COPY . .
 
 # Устанавливаем зависимости
-RUN yarn install
+RUN --mount=type=cache,target=/usr/src/app/node_modules yarn install --prefer-offline
 
 # Собираем приложение
 RUN npm install react-scripts@3.0.1 -g
