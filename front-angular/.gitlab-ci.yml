@@ -1,0 +1,43 @@
+.front-angular-common:
+  rules:
+    - changes:
+        - 'front-angular/*'
+
+front-angular-build:
+  extends: .front-angular-common
+  stage: build
+  script:
+    - echo "Building svelte"
+    - docker build
+      -f ./front-react/Dockerfile
+      --build-arg API_URL="http://backend.local.dev"
+      --build-arg BUILDKIT_INLINE_CACHE=1
+      --cache-from "$FRONT_ANGULAR_DOCKER_BUILDER_IMAGE"
+      --target builder
+      -t $FRONT_ANGULAR_DOCKER_BUILDER_IMAGE:$CI_COMMIT_SHORT_SHA ./front-react
+    - docker tag $FRONT_ANGULAR_DOCKER_BUILDER_IMAGE:$CI_COMMIT_SHORT_SHA  $FRONT_ANGULAR_DOCKER_BUILDER_IMAGE:latest
+    - docker push $FRONT_ANGULAR_DOCKER_BUILDER_IMAGE:$CI_COMMIT_SHORT_SHA
+    - docker push $FRONT_ANGULAR_DOCKER_BUILDER_IMAGE:latest
+
+front-angular-test:
+  extends: .front-angular-common
+  stage: test
+  script:
+    - echo "Testing svelte"
+    - docker run $FRONT_ANGULAR_DOCKER_BUILDER_IMAGE:latest sh -c "CI=true yarn test"
+    - echo "Test successfully!"
+
+front-angular-deploy:
+  extends: .front-angular-common
+  stage: deploy
+  needs: ["front-angular-build"]
+  script:
+    - echo "Deploying svelte"
+    - docker build
+      -f ./front-angular/Dockerfile
+      --build-arg BUILDKIT_INLINE_CACHE=1
+      --target deploy
+      -t $FRONT_ANGULAR_DOCKER_IMAGE:$CI_COMMIT_SHORT_SHA ./front-angular
+    - docker tag $FRONT_ANGULAR_DOCKER_IMAGE:$CI_COMMIT_SHORT_SHA  $FRONT_ANGULAR_DOCKER_IMAGE:latest
+    - docker push $FRONT_ANGULAR_DOCKER_IMAGE:$CI_COMMIT_SHORT_SHA
+    - docker push $FRONT_ANGULAR_DOCKER_IMAGE:latest
