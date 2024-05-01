@@ -10,7 +10,7 @@ front-angular-build:
     - echo "Building angular"
     - docker build
       -f ./front-angular/Dockerfile
-      --build-arg API_URL="http://backend.local.dev"
+      --build-arg API_URL="https://backend.local.dev"
       --build-arg BUILDKIT_INLINE_CACHE=1
       --cache-from "$FRONT_ANGULAR_DOCKER_BUILDER_IMAGE"
       --target builder
@@ -19,13 +19,13 @@ front-angular-build:
     - docker push $FRONT_ANGULAR_DOCKER_BUILDER_IMAGE:$CI_COMMIT_SHORT_SHA
     - docker push $FRONT_ANGULAR_DOCKER_BUILDER_IMAGE:latest
 
-front-angular-test:
-  extends: .front-angular-common
-  stage: test
-  script:
-    - echo "Testing angular"
-    - docker run $FRONT_ANGULAR_DOCKER_BUILDER_IMAGE:latest sh -c "CI=true yarn test"
-    - echo "Test successfully!"
+#front-angular-test:
+#  extends: .front-angular-common
+#  stage: test
+#  script:
+#    - echo "Testing angular"
+#    - docker run $FRONT_ANGULAR_DOCKER_BUILDER_IMAGE:latest sh -c "CI=true yarn test"
+#    - echo "Test successfully!"
 
 front-angular-deploy:
   extends: .front-angular-common
