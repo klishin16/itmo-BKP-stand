@@ -34,10 +34,10 @@ front-svelte-deploy:
   script:
     - echo "Deploying svelte"
     - docker build 
-      -f ./front-react/Dockerfile
+      -f ./front-svelte/Dockerfile
       --build-arg BUILDKIT_INLINE_CACHE=1
       --target deploy
-      -t $FRONT_SVELTE_DOCKER_IMAGE:$CI_COMMIT_SHORT_SHA ./front-react
+      -t $FRONT_SVELTE_DOCKER_IMAGE:$CI_COMMIT_SHORT_SHA ./front-svelte
     - docker tag $FRONT_SVELTE_DOCKER_IMAGE:$CI_COMMIT_SHORT_SHA  $FRONT_SVELTE_DOCKER_IMAGE:latest
     - docker push $FRONT_SVELTE_DOCKER_IMAGE:$CI_COMMIT_SHORT_SHA
     - docker push $FRONT_SVELTE_DOCKER_IMAGE:latest
