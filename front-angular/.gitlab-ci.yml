@@ -10,7 +10,6 @@ front-angular-build:
     - echo "Building angular"
     - docker build
       -f ./front-angular/Dockerfile
-      --build-arg API_URL="http://backend.local.dev"
       --build-arg BUILDKIT_INLINE_CACHE=1
       --cache-from "$FRONT_ANGULAR_DOCKER_BUILDER_IMAGE"
       --target builder
