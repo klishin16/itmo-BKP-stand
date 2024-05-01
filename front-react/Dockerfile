@@ -10,7 +10,8 @@ WORKDIR /usr/src/app
 COPY . .
 
 # Устанавливаем зависимости
-RUN --mount=type=cache,target=/usr/src/app/node_modules yarn install --prefer-offline
+# RUN --mount=type=cache,target=/usr/src/app/node_modules yarn install --prefer-offline
+RUN yarn install
 
 # Собираем приложение
 #RUN npm install react-scripts@3.0.1 -g
