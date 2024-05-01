@@ -23,7 +23,7 @@ front-angular-test:
   extends: .front-angular-common
   stage: test
   script:
-    - echo "Testing svelte"
+    - echo "Testing angular"
     - docker run $FRONT_ANGULAR_DOCKER_BUILDER_IMAGE:latest sh -c "CI=true yarn test"
     - echo "Test successfully!"
 
