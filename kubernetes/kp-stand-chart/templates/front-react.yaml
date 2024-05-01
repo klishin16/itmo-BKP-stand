@@ -1,0 +1,42 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: kp-stand-front-react
+  namespace: kp-stand
+  labels:
+    k8s-app: kp-stand-front-react
+    project: kp-stand
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      k8s-app: kp-stand-front-react
+  template:
+    metadata:
+      name: kp-stand-front-react
+      labels:
+        k8s-app: kp-stand-front-react
+    spec:
+      containers:
+        - name: kp-stand-front-react
+          # docker image path
+          image: registry.local.dev/root/kp-stand/front_react:latest
+          imagePullPolicy: Always
+      imagePullSecrets:
+        - name: registry-key-1
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: kp-stand-front-react
+  namespace: kp-stand
+  labels:
+    k8s-app: kp-stand-front-react
+    project: kp-stand
+spec:
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+  selector:
+    k8s-app: kp-stand-front-react
