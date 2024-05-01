@@ -15,5 +15,7 @@ RUN yarn install
 # Собираем приложение
 RUN yarn build
 
+EXPOSE 80
+
 # Запускаем сервер
 CMD [ "node", "dist/main.js" ]
