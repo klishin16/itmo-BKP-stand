@@ -10,7 +10,7 @@ front_react_build:
     - echo "Building react"
     - docker build 
       -f ./front-react/Dockerfile
-      --build-arg API_URL="https://kp-stand-backend.local.dev" 
+      --build-arg API_URL="http://backend.local.dev" 
       --build-arg BUILDKIT_INLINE_CACHE=1
       --cache-from "$FRONT_REACT_DOCKER_BUILDER_IMAGE"
       --target builder
