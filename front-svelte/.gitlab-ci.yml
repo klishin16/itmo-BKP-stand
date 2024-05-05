@@ -23,7 +23,7 @@ front-svelte-test:
   extends: .front-svelte-common
   stage: test
   script:
-    - echo "Testing svelte"
+    - echo "Testing svelte "
     - docker run $FRONT_SVELTE_DOCKER_BUILDER_IMAGE:latest sh -c "CI=true yarn test"
     - echo "Test successfully!"
 
