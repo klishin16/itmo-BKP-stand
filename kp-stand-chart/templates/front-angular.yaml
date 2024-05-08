@@ -20,10 +20,8 @@ spec:
       containers:
         - name: kp-stand-front-angular
           # docker image path
-          image: registry.local.dev/root/kp-stand/front_angular:latest
-          imagePullPolicy: Always
-      imagePullSecrets:
-        - name: registry-key-1
+          image: localhost:5000/front_angular:latest
+          imagePullPolicy: Never
 ---
 kind: Service
 apiVersion: v1
