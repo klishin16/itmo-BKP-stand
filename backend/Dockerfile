@@ -15,6 +15,12 @@ RUN yarn install
 # Собираем приложение
 RUN yarn build
 
+FROM node:alpine as deploy
+
+WORKDIR /usr/src/app
+
+COPY --from=builder /usr/src/app/dist ./dist
+
 EXPOSE 80
 
 # Запускаем сервер
