@@ -10,7 +10,7 @@
 ### Необходимы инструменты
 - git
 - docker
-- kubernetes
+- kubernetes (minikube)
 - helm
 ### Установка
 1. Скачать репозиторий
@@ -40,11 +40,7 @@
     ```
    Команда ```docker images``` должна содержать следующую информацию:
    ![img.png](img.png)
-5. Создать пространство имен kubernetes
-    ```bash
-    kubectl create namespace kp-stand
-    ```
-6. Загрузить образы в docker registry
+5. Загрузить образы в docker registry
    ```bash
     docker push localhost:5000/front_angular:latest
     ```
@@ -56,6 +52,10 @@
     ```
     ```bash
     docker push localhost:5000/backend:latest
+    ```
+6. Создать пространство имен kubernetes
+    ```bash
+    kubectl create namespace kp-stand
     ```
 7. Развернуть сервисы в кластере kubernetes
     ```bash
