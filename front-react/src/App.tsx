@@ -1,13 +1,10 @@
 import { Profiler, useEffect, useState } from 'react'
 import './App.css'
-
-export interface IMovie {
-    id: string;
-    name: string;
-    previewImage: string;
-    previewVideoLink: string;
-    genre: string;
-}
+import Controls from "./Controls.tsx";
+import { ETestType, IMovie, IState } from "./types.ts";
+import Movie from "./Movie.tsx";
+import MovieNode from "./MovieNode.tsx";
+import { BACKEND_URL, LOAD_MOVIES_COUNT } from "./constants.ts";
 
 function useForceUpdate() {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -17,17 +14,28 @@ function useForceUpdate() {
     // is better than directly setting `setValue(value + 1)`
 }
 
-const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || 'http://localhost:3000';
+const initialState: IState = {
+    isShow: true,
+    testType: ETestType.STATIC,
+    itemsCount: 7
+}
 
-function App({ p_n  }: { p_n?: number }) {
-    const n: number = p_n ?? 128;
+function App() {
+    const [loadedMovies, setLoadedMovies] = useState<IMovie[]>([])
     const [movies, setMovies] = useState<IMovie[]>([])
+    const [state, setState] = useState<IState>(initialState);
 
     useEffect(() => {
-        fetch(`${BACKEND_URL}/movies/${n}`)
+        fetch(`${BACKEND_URL}/movies/${LOAD_MOVIES_COUNT}`)
             .then(response => response.json())
-            .then(data => setMovies(data))
+            .then(data => setLoadedMovies(data))
     }, []);
+
+    useEffect(() => {
+        if (loadedMovies.length) {
+            setMovies(Array.from(Array(state.itemsCount), (_, index) => loadedMovies[index % LOAD_MOVIES_COUNT]));
+        }
+    }, [loadedMovies, state.itemsCount]);
 
     const handleRender = (
         _id: string, // Unique identifier for the Profiler
@@ -37,7 +45,7 @@ function App({ p_n  }: { p_n?: number }) {
         startTime: number, // When React started rendering this update
         commitTime: number, // When React committed this update
     ) => {
-        console.log(`Render statistics: items: ${n}, time: ${(commitTime - startTime).toFixed(3)}, relative: ${((commitTime - startTime) / n * 1000).toFixed(3)}`)
+        console.log(`Render statistics: items: ${state.itemsCount}, time: ${(commitTime - startTime).toFixed(3)}, relative: ${((commitTime - startTime) / state.itemsCount * 1000).toFixed(3)}`)
     }
 
     const forceUpdate = useForceUpdate();
@@ -45,23 +53,43 @@ function App({ p_n  }: { p_n?: number }) {
     return (
         <Profiler id={ 'root' } onRender={ handleRender }>
             <div className='page'>
-                <button id="render-btn" onClick={ forceUpdate }>Render</button>
-                <ul>
-                    { movies.map(movie => (
-                        <li key={ movie.id } style={ {
-                            display: 'flex',
-                            flexDirection: 'column',
-                            border: '1px solid white',
-                            borderRadius: 5,
-                            marginBottom: 5
-                        } }>
-                            <span>{ movie.name }</span>
-                            <span>{ movie.genre }</span>
-                            <span>{ movie.previewImage }</span>
-                            <span>{ movie.previewVideoLink }</span>
-                        </li>
-                    )) }
-                </ul>
+                <Controls
+                    testType={state.testType}
+                    itemsCount={state.itemsCount}
+                    onForceUpdate={() => forceUpdate()}
+                    onToggleShow={() => setState(state => ({ ...state, isShow: !state.isShow }))}
+                    onSwitchTest={(testType) => setState(state => ({ ...state, testType, itemsCount: initialState.itemsCount }))}
+                    onItemsCountChange={(itemsCount) => setState(state => ({ ...state, itemsCount }))}
+                />
+                {/* Render static content */}
+                { state.isShow && state.testType === ETestType.STATIC &&
+                    <ul style={ {listStyle: 'none', padding: 0} }>
+                        { movies.map((movie, index) => (
+                            <li key={ index } style={ {
+                                display: 'flex',
+                                flexDirection: 'column',
+                                border: '1px solid white',
+                                borderRadius: 5,
+                                marginBottom: 5
+                            } }>
+                                <span>{ movie.name }</span>
+                                <span>{ movie.genre }</span>
+                                <span>{ movie.previewImage }</span>
+                                <span>{ movie.previewVideoLink }</span>
+                            </li>
+                        )) }
+                    </ul>
+                }
+                {/* Render components list */}
+                { state.isShow && state.testType === ETestType.LIST &&
+                    <ul style={ {listStyle: 'none', padding: 0} }>
+                        { movies.map((movie, index) => <Movie key={ index } movie={ movie } />) }
+                    </ul>
+                }
+                {/* Render components tree */}
+                { state.isShow && state.testType === ETestType.TREE && movies.length &&
+                    <MovieNode movie={movies[0]} currentDeep={0} targetDeep={state.itemsCount} />
+                }
             </div>
         </Profiler>
     )
