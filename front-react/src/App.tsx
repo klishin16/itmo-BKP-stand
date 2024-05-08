@@ -20,10 +20,17 @@ const initialState: IState = {
     itemsCount: 7
 }
 
-function App() {
+interface IAppProps {
+    p_n?: number
+}
+
+function App({ p_n }: IAppProps) {
     const [loadedMovies, setLoadedMovies] = useState<IMovie[]>([])
     const [movies, setMovies] = useState<IMovie[]>([])
-    const [state, setState] = useState<IState>(initialState);
+    const [state, setState] = useState<IState>({
+        ...initialState,
+        itemsCount: p_n ?? initialState.itemsCount,
+    });
 
     useEffect(() => {
         fetch(`${BACKEND_URL}/movies/${LOAD_MOVIES_COUNT}`)
