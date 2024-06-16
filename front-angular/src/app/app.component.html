@@ -1,8 +1,29 @@
 <div class='page'>
-  <button id="render-btn" (click)="render()">Render</button>
-  <ul>
-    <app-movie *ngFor="let movie of moviesList" [movie]="movie"/>
-  </ul>
+  <app-controls />
+
+  <ng-container *ngIf="renderService.isShow$ | async">
+    <ng-container *ngIf="{ testType: renderService.testType$ | async, moviesList: renderService.moviesList$ | async } as testData">
+      <!-- Render static content -->
+      <ul *ngIf="testData.testType === ETestType.STATIC">
+        <li class="static-item" *ngFor="let movie of testData.moviesList">
+          <span>{{ movie.name }}</span>
+          <span>{{ movie.genre }}</span>
+          <span>{{ movie.previewImage }}</span>
+          <span>{{ movie.previewVideoLink }}</span>
+        </li>
+      </ul>
+
+      <!-- Render components list -->
+      <ul *ngIf="testData.testType === ETestType.LIST">
+        <app-movie *ngFor="let movie of testData.moviesList" [movie]="movie"/>
+      </ul>
+
+      <!-- Render components tree -->
+      <ul *ngIf="testData.testType === ETestType.TREE">
+        <app-movie-node [movie]="testData.moviesList![0]" [currentDeep]="0" [targetDeep]="(renderService.itemsCount$ | async) || 0" />
+      </ul>
+    </ng-container>
+  </ng-container>
 </div>
 
 <router-outlet />

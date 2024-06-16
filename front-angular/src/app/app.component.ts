@@ -1,7 +1,10 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { MovieComponent } from "./movie/movie.component";
-import { NgForOf } from "@angular/common";
+import { AsyncPipe, NgForOf, NgIf } from "@angular/common";
+import { ControlsComponent } from "./controls/controls.component";
+import { ETestType, RenderService } from "./render.service";
+import { MovieNodeComponent } from "./movie-node/movie-node.component";
 
 export interface IMovie {
   id: string;
@@ -11,30 +14,21 @@ export interface IMovie {
   genre: string;
 }
 
-const BACKEND_URL = 'http://backend.local.dev';
-
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, MovieComponent, NgForOf],
+  imports: [RouterOutlet, MovieComponent, NgForOf, ControlsComponent, AsyncPipe, NgIf, MovieNodeComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
-export class AppComponent implements OnInit  {
+export class AppComponent {
   title = 'front-angular';
 
-  n = 128;
-  public moviesList: IMovie[] = []
-
-  constructor(private cdr: ChangeDetectorRef) {}
-
-  public ngOnInit(): void {
-    fetch(`${BACKEND_URL}/movies/${this.n}`)
-      .then(response => response.json())
-      .then(data => this.moviesList = data)
-  }
+  constructor(private cdr: ChangeDetectorRef, public readonly renderService: RenderService) {}
 
   public render() {
     this.cdr.detectChanges();
   }
+
+  protected readonly ETestType = ETestType;
 }

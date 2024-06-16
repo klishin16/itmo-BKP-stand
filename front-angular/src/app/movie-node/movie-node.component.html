@@ -1,0 +1,10 @@
+<div class="movie-node">
+  <ng-container *ngIf="currentDeep === targetDeep; else node">
+    <span>{{ movie.name }}</span>
+  </ng-container>
+
+  <ng-template #node>
+    <app-movie-node [movie]="movie" [targetDeep]="targetDeep" [currentDeep]="currentDeep + 1"></app-movie-node>
+    <app-movie-node [movie]="movie" [targetDeep]="targetDeep" [currentDeep]="currentDeep + 1"></app-movie-node>
+  </ng-template>
+</div>

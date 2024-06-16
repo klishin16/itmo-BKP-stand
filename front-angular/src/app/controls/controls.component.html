@@ -1,0 +1,33 @@
+<div class="controls" *ngIf="{ testType: renderService.testType$ | async } as data">
+  <div class="controls__top">
+    <button id="render-btn" (click)="onForceUpdate()">Rerender</button>
+    <button id="show-btn" (click)="renderService.onToggleShow()">Toggle component show</button>
+    <input class="controls__inp"
+           type='number'
+           [value]="renderService.itemsCount$ | async"
+           (input)="onItemsCountChange($event)"
+           min="1"
+           max="{{data.testType === ETestType.TREE ? MAX_TREE_DEEP : MAX_ITEMS_COUNT}}"
+    />
+  </div>
+  <div class="controls__btn-group">
+    <button class="btn"
+            [ngClass]="{
+              'btn--active': data.testType === ETestType.STATIC
+            }"
+            (click)="renderService.onSwitchTest(ETestType.STATIC)">Static elements
+    </button>
+    <button class="btn"
+            [ngClass]="{
+              'btn--active': data.testType === ETestType.LIST
+            }"
+            (click)="renderService.onSwitchTest(ETestType.LIST)">Components list
+    </button>
+    <button class="btn"
+            [ngClass]="{
+              'btn--active': data.testType === ETestType.TREE
+            }"
+            (click)="renderService.onSwitchTest(ETestType.TREE)">Components tree
+    </button>
+  </div>
+</div>
